@@ -25,8 +25,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Window.Resources>
 
-    <Border Background="{StaticResource WindowBgBrush}"
-            BorderBrush="{StaticResource BorderBrush}"
+    <Border Background="{DynamicResource WindowBgBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
             BorderThickness="1"
             CornerRadius="10">
         <Grid>
@@ -37,7 +37,7 @@
 
             <!-- Title bar -->
             <Border Grid.Row="0"
-                    Background="{StaticResource TitleBarBrush}"
+                    Background="{DynamicResource TitleBarBrush}"
                     CornerRadius="10,10,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid Margin="12,0,6,0">
@@ -46,11 +46,11 @@
                         <TextBlock Text="&#xE9CA;"
                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                    FontSize="12"
-                                   Foreground="{StaticResource AccentBrush}"
+                                   Foreground="{DynamicResource AccentBrush}"
                                    VerticalAlignment="Center"
                                    Margin="0,0,7,0"/>
                         <TextBlock Text="HeatWatch"
-                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   Foreground="{DynamicResource TextSecondaryBrush}"
                                    FontSize="12"
                                    FontWeight="Medium"
                                    VerticalAlignment="Center"/>
@@ -83,7 +83,7 @@
             <Rectangle Grid.Row="0"
                        Height="1"
                        VerticalAlignment="Bottom"
-                       Fill="{StaticResource BorderBrush}"/>
+                       Fill="{DynamicResource BorderBrush}"/>
 
             <!-- Sensor node list -->
             <ScrollViewer Grid.Row="1"
@@ -103,8 +103,8 @@
 
                     <!-- CPU driver warning — shown when security software has blocked hardware sensor access -->
                     <Border Padding="10,8"
-                            Background="{StaticResource Surface2Brush}"
-                            BorderBrush="{StaticResource HeatWarmBrush}"
+                            Background="{DynamicResource Surface2Brush}"
+                            BorderBrush="{DynamicResource HeatWarmBrush}"
                             BorderThickness="1"
                             CornerRadius="6"
                             Margin="0,2,0,4"
@@ -114,21 +114,21 @@
                                 <TextBlock Text="&#xE8C8;"
                                            FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                            FontSize="12"
-                                           Foreground="{StaticResource HeatWarmBrush}"
+                                           Foreground="{DynamicResource HeatWarmBrush}"
                                            VerticalAlignment="Center"
                                            Margin="0,0,8,0"/>
                                 <TextBlock Text="CPU temps unavailable"
-                                           Foreground="{StaticResource TextPrimaryBrush}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
                                            FontSize="11"
                                            FontWeight="Medium"
                                            VerticalAlignment="Center"/>
                             </StackPanel>
-                            <TextBlock Foreground="{StaticResource TextSecondaryBrush}"
+                            <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="11"
                                        TextWrapping="Wrap">
                                 <Run Text="Windows Defender blocked a driver HeatWatch needs to read CPU temperatures. Open"/>
                                 <Run Text="Windows Security → Virus &amp; threat protection → Protection history"
-                                     Foreground="{StaticResource AccentBrush}"/>
+                                     Foreground="{DynamicResource AccentBrush}"/>
                                 <Run Text="and allow the blocked item."/>
                             </TextBlock>
                         </StackPanel>
@@ -136,8 +136,8 @@
 
                     <!-- First-run hint — shown until the user opens Settings -->
                     <Border Padding="10,8"
-                            Background="{StaticResource Surface2Brush}"
-                            BorderBrush="{StaticResource BorderBrush}"
+                            Background="{DynamicResource Surface2Brush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
                             BorderThickness="1"
                             CornerRadius="6"
                             Margin="0,2,0,4"
@@ -146,15 +146,15 @@
                             <TextBlock Text="&#xE713;"
                                        FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                        FontSize="12"
-                                       Foreground="{StaticResource AccentBrush}"
+                                       Foreground="{DynamicResource AccentBrush}"
                                        VerticalAlignment="Center"
                                        Margin="0,0,8,0"/>
-                            <TextBlock Foreground="{StaticResource TextSecondaryBrush}"
+                            <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
                                        FontSize="11"
                                        VerticalAlignment="Center"
                                        TextWrapping="Wrap">
                                 <Run Text="Add more sensors from the"/>
-                                <Run Text="Settings" Foreground="{StaticResource AccentBrush}" FontWeight="Medium"/>
+                                <Run Text="Settings" Foreground="{DynamicResource AccentBrush}" FontWeight="Medium"/>
                                 <Run Text="menu."/>
                             </TextBlock>
                         </StackPanel>
@@ -176,16 +176,16 @@
                         <TextBlock Text="&#xE9CA;"
                                    FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                    FontSize="28"
-                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Foreground="{DynamicResource TextMutedBrush}"
                                    HorizontalAlignment="Center"
                                    Margin="0,0,0,10"/>
                         <TextBlock Text="No sensors enabled"
-                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Foreground="{DynamicResource TextMutedBrush}"
                                    FontSize="12"
                                    HorizontalAlignment="Center"
                                    Margin="0,0,0,4"/>
                         <TextBlock Text="Open Settings to choose sensors"
-                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Foreground="{DynamicResource TextMutedBrush}"
                                    FontSize="11"
                                    HorizontalAlignment="Center"/>
                     </StackPanel>

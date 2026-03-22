@@ -27,6 +27,12 @@
     <!-- Title bar -->
     <SolidColorBrush x:Key="TitleBarBrush" Color="#111111"/>
 
+    <!-- Settings sidebar -->
+    <SolidColorBrush x:Key="SidebarBrush"            Color="#111111"/>
+    <SolidColorBrush x:Key="NavItemHoverBrush"        Color="#2C2C2C"/>
+    <SolidColorBrush x:Key="NavItemSelectedBrush"     Color="#323232"/>
+    <SolidColorBrush x:Key="ControlPressedBrush"      Color="#383838"/>
+
     <!-- Heat accent colors (solid, used as left-strip on node cards) -->
     <SolidColorBrush x:Key="HeatCoolBrush"   Color="#3DC45A"/>
     <SolidColorBrush x:Key="HeatWarmBrush"   Color="#D4A017"/>

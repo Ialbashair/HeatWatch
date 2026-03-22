@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HeatWatch.Core.Models;
 using HeatWatch.Core.Persistence;
+using HeatWatch.Core.Theming;
 
 namespace HeatWatch.ViewModels;
 
@@ -23,14 +24,27 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty] private int _selectedTabIndex = 0;
     [ObservableProperty] private string _searchText = string.Empty;
+    [ObservableProperty] private AppTheme _selectedTheme;
 
     partial void OnSearchTextChanged(string value) => FilteredNodes.Refresh();
+
+    partial void OnSelectedThemeChanged(AppTheme value)
+    {
+        OnPropertyChanged(nameof(IsThemeDark));
+        OnPropertyChanged(nameof(IsThemeLight));
+        OnPropertyChanged(nameof(IsThemeSystem));
+    }
+
+    public bool IsThemeDark   { get => _selectedTheme == AppTheme.Dark;          set { if (value) SelectedTheme = AppTheme.Dark; } }
+    public bool IsThemeLight  { get => _selectedTheme == AppTheme.Light;         set { if (value) SelectedTheme = AppTheme.Light; } }
+    public bool IsThemeSystem { get => _selectedTheme == AppTheme.SystemDefault; set { if (value) SelectedTheme = AppTheme.SystemDefault; } }
 
     public SettingsViewModel(AppSettings settings, MainViewModel mainVm, JsonSettingsRepository repo)
     {
         _settings = settings;
         _mainVm = mainVm;
         _repo = repo;
+        _selectedTheme = settings.Theme;
 
         AllNodes = new ObservableCollection<NodeDefinition>(
             settings.Nodes.Select(n => new NodeDefinition
@@ -86,7 +100,9 @@ public sealed partial class SettingsViewModel : ObservableObject
     public void Save(System.Windows.Window window)
     {
         _settings.Nodes = [.. AllNodes];
+        _settings.Theme = SelectedTheme;
         _mainVm.RebuildNodes(_settings.Nodes);
+        ThemeManager.Apply(SelectedTheme);
         _repo.Save(_settings);
         window.Close();
     }

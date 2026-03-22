@@ -17,8 +17,8 @@
         FontFamily="Segoe UI Variable Display, Segoe UI"
         d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}">
 
-    <Border Background="{StaticResource WindowBgBrush}"
-            BorderBrush="{StaticResource BorderBrush}"
+    <Border Background="{DynamicResource WindowBgBrush}"
+            BorderBrush="{DynamicResource BorderBrush}"
             BorderThickness="1"
             CornerRadius="10">
         <Grid>
@@ -30,12 +30,12 @@
 
             <!-- ═══ Title bar ═══ -->
             <Border Grid.Row="0"
-                    Background="{StaticResource TitleBarBrush}"
+                    Background="{DynamicResource TitleBarBrush}"
                     CornerRadius="10,10,0,0"
                     MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
                 <Grid Margin="14,0,6,0">
                     <TextBlock Text="Settings"
-                               Foreground="{StaticResource TextSecondaryBrush}"
+                               Foreground="{DynamicResource TextSecondaryBrush}"
                                FontSize="12"
                                FontWeight="Medium"
                                VerticalAlignment="Center"/>
@@ -46,7 +46,7 @@
                             Click="Cancel_Click"/>
                 </Grid>
             </Border>
-            <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom" Fill="{StaticResource BorderBrush}"/>
+            <Rectangle Grid.Row="0" Height="1" VerticalAlignment="Bottom" Fill="{DynamicResource BorderBrush}"/>
 
             <!-- ═══ Body: sidebar + content ═══ -->
             <Grid Grid.Row="1">
@@ -57,15 +57,15 @@
 
                 <!-- Left nav sidebar -->
                 <Border Grid.Column="0"
-                        Background="#111111"
-                        BorderBrush="{StaticResource BorderBrush}"
+                        Background="{DynamicResource SidebarBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="0,0,1,0">
                     <Grid>
                         <StackPanel Margin="0,10,0,0">
 
                         <!-- Section label -->
                         <TextBlock Text="HEATWATCH"
-                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Foreground="{DynamicResource TextMutedBrush}"
                                    FontSize="9"
                                    FontWeight="SemiBold"
                                    Margin="16,0,0,8"/>
@@ -90,7 +90,7 @@
                                 </StackPanel>
                             </ListBoxItem>
 
-                            <!-- Theme -->
+                            <!-- Appearance -->
                             <ListBoxItem>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="&#xE790;"
@@ -98,7 +98,7 @@
                                                FontSize="14"
                                                Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                                                VerticalAlignment="Center"/>
-                                    <TextBlock Text="Theme"
+                                    <TextBlock Text="Appearance"
                                                FontSize="12"
                                                Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                                                Margin="10,0,0,0"
@@ -127,7 +127,7 @@
 
                         <!-- Version pinned to bottom -->
                         <TextBlock Text="{Binding AppVersion}"
-                                   Foreground="{StaticResource TextMutedBrush}"
+                                   Foreground="{DynamicResource TextMutedBrush}"
                                    FontSize="10"
                                    VerticalAlignment="Bottom"
                                    HorizontalAlignment="Left"
@@ -159,15 +159,15 @@
                         <!-- Page title -->
                         <TextBlock Grid.Row="0"
                                    Text="Sensors"
-                                   Foreground="{StaticResource TextPrimaryBrush}"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"
                                    FontSize="18"
                                    FontWeight="SemiBold"
                                    Margin="16,14,16,10"/>
 
                         <!-- Search box + column headers -->
                         <StackPanel Grid.Row="1" Margin="16,0,16,6">
-                            <Border Background="{StaticResource Surface2Brush}"
-                                    BorderBrush="{StaticResource BorderBrush}"
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
                                     BorderThickness="1"
                                     CornerRadius="6"
                                     Margin="0,0,0,8">
@@ -180,16 +180,16 @@
                                                Text="&#xE721;"
                                                FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
                                                FontSize="12"
-                                               Foreground="{StaticResource TextMutedBrush}"
+                                               Foreground="{DynamicResource TextMutedBrush}"
                                                VerticalAlignment="Center"
                                                Margin="9,0,6,0"/>
                                     <TextBox Grid.Column="1"
                                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                                              Background="Transparent"
                                              BorderThickness="0"
-                                             Foreground="{StaticResource TextPrimaryBrush}"
-                                             CaretBrush="{StaticResource TextPrimaryBrush}"
-                                             SelectionBrush="{StaticResource AccentBrush}"
+                                             Foreground="{DynamicResource TextPrimaryBrush}"
+                                             CaretBrush="{DynamicResource TextPrimaryBrush}"
+                                             SelectionBrush="{DynamicResource AccentBrush}"
                                              FontSize="12"
                                              Padding="0,7"
                                              VerticalContentAlignment="Center">
@@ -199,7 +199,7 @@
                                                     <VisualBrush x:Key="PlaceholderBrush" TileMode="None" Stretch="None" AlignmentX="Left">
                                                         <VisualBrush.Visual>
                                                             <TextBlock Text="Search sensors..."
-                                                                       Foreground="{StaticResource TextMutedBrush}"
+                                                                       Foreground="{DynamicResource TextMutedBrush}"
                                                                        FontSize="12"
                                                                        Margin="0,7"/>
                                                         </VisualBrush.Visual>
@@ -221,8 +221,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="64"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="SENSOR" Foreground="{StaticResource TextMutedBrush}" FontSize="10" FontWeight="SemiBold"/>
-                                <TextBlock Grid.Column="2" Text="ORDER"  Foreground="{StaticResource TextMutedBrush}" FontSize="10" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="SENSOR" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="SemiBold"/>
+                                <TextBlock Grid.Column="2" Text="ORDER"  Foreground="{DynamicResource TextMutedBrush}" FontSize="10" FontWeight="SemiBold" HorizontalAlignment="Center"/>
                             </Grid>
                         </StackPanel>
 
@@ -235,8 +235,8 @@
                             <ItemsControl ItemsSource="{Binding FilteredNodes}" Focusable="False">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate DataType="{x:Type models:NodeDefinition}">
-                                        <Border Background="{StaticResource Surface2Brush}"
-                                                BorderBrush="{StaticResource BorderBrush}"
+                                        <Border Background="{DynamicResource Surface2Brush}"
+                                                BorderBrush="{DynamicResource BorderBrush}"
                                                 BorderThickness="1"
                                                 CornerRadius="6"
                                                 Margin="0,0,0,4"
@@ -255,13 +255,13 @@
                                                     <TextBox Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}"
                                                              Background="Transparent"
                                                              BorderThickness="0"
-                                                             Foreground="{StaticResource TextPrimaryBrush}"
+                                                             Foreground="{DynamicResource TextPrimaryBrush}"
                                                              FontSize="12"
                                                              Padding="0"
-                                                             CaretBrush="{StaticResource TextPrimaryBrush}"
-                                                             SelectionBrush="{StaticResource AccentBrush}"/>
+                                                             CaretBrush="{DynamicResource TextPrimaryBrush}"
+                                                             SelectionBrush="{DynamicResource AccentBrush}"/>
                                                     <TextBlock Text="{Binding HardwareName}"
-                                                               Foreground="{StaticResource TextMutedBrush}"
+                                                               Foreground="{DynamicResource TextMutedBrush}"
                                                                FontSize="10"
                                                                Margin="0,1,0,0"/>
                                                 </StackPanel>
@@ -283,7 +283,7 @@
                         </ScrollViewer>
                     </Grid>
 
-                    <!-- ── Theme tab ── -->
+                    <!-- ── Appearance tab ── -->
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -295,16 +295,33 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <StackPanel>
-                            <TextBlock Text="Theme"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
+                        <StackPanel Margin="16,14,16,0">
+                            <TextBlock Text="Appearance"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontSize="18"
                                        FontWeight="SemiBold"
-                                       Margin="16,14,16,4"/>
-                            <TextBlock Text="Appearance options coming soon."
-                                       Foreground="{StaticResource TextMutedBrush}"
-                                       FontSize="12"
-                                       Margin="16,6,16,0"/>
+                                       Margin="0,0,0,20"/>
+
+                            <TextBlock Text="THEME"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,10"/>
+
+                            <RadioButton Content="Dark"
+                                         Style="{StaticResource ThemeOptionStyle}"
+                                         GroupName="AppTheme"
+                                         IsChecked="{Binding IsThemeDark}"/>
+
+                            <RadioButton Content="Light"
+                                         Style="{StaticResource ThemeOptionStyle}"
+                                         GroupName="AppTheme"
+                                         IsChecked="{Binding IsThemeLight}"/>
+
+                            <RadioButton Content="System Default"
+                                         Style="{StaticResource ThemeOptionStyle}"
+                                         GroupName="AppTheme"
+                                         IsChecked="{Binding IsThemeSystem}"/>
                         </StackPanel>
                     </Grid>
 
@@ -322,12 +339,12 @@
                         </Grid.Style>
                         <StackPanel>
                             <TextBlock Text="Startup"
-                                       Foreground="{StaticResource TextPrimaryBrush}"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Margin="16,14,16,4"/>
                             <TextBlock Text="Startup behavior options coming soon."
-                                       Foreground="{StaticResource TextMutedBrush}"
+                                       Foreground="{DynamicResource TextMutedBrush}"
                                        FontSize="12"
                                        Margin="16,6,16,0"/>
                         </StackPanel>
@@ -338,7 +355,7 @@
 
             <!-- ═══ Footer ═══ -->
             <Border Grid.Row="2"
-                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
                     BorderThickness="0,1,0,0"
                     Padding="14,10">
                 <Grid>

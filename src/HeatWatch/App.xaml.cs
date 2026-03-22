@@ -1,6 +1,7 @@
 using System.Windows;
 using HeatWatch.Core.Hardware;
 using HeatWatch.Core.Persistence;
+using HeatWatch.Core.Theming;
 using HeatWatch.ViewModels;
 using HeatWatch.Views;
 using LibreHardwareMonitor.Hardware;
@@ -29,18 +30,21 @@ public partial class App : Application
             var repo = new JsonSettingsRepository();
             var settings = repo.Load(discovered);
 
-            // 4. Set up polling
+            // 4. Apply saved theme before any window is created
+            ThemeManager.Apply(settings.Theme);
+
+            // 5. Set up polling
             _poller = new SensorPoller(_hardwareMonitor, settings.PollingIntervalMs);
 
-            // 5. Wire up ViewModel
+            // 6. Wire up ViewModel
             bool cpuTempDriverBlocked =
                 discovered.Any(r => r.HardwareType.Contains("Cpu") && r.Type == SensorType.Load) &&
                 !discovered.Any(r => r.HardwareType.Contains("Cpu") && r.Type == SensorType.Temperature);
 
             _mainVm = new MainViewModel(_poller, repo, settings);
-            _mainVm.ShowCpuDriverWarning = true; // TODO: remove, testing only
+            _mainVm.ShowCpuDriverWarning = cpuTempDriverBlocked;
 
-            // 6. Create and show window
+            // 7. Create and show window
             var window = new MainWindow { DataContext = _mainVm };
 
             if (!double.IsNaN(settings.WindowLeft) && !double.IsNaN(settings.WindowTop))
@@ -58,7 +62,7 @@ public partial class App : Application
             MainWindow = window;
             window.Show();
 
-            // 7. Start polling after the window is visible
+            // 8. Start polling after the window is visible
             _poller.Start();
         }
         catch (Exception ex)
