@@ -1,0 +1,53 @@
+<UserControl x:Class="HeatWatch.Views.Controls.SensorNodeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Border Background="{StaticResource Surface2Brush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="6"
+            Margin="0,0,0,4"
+            ClipToBounds="True">
+        <Grid Height="34">
+            <Grid.ColumnDefinitions>
+                <!-- Heat accent strip -->
+                <ColumnDefinition Width="3"/>
+                <!-- Icon -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Label -->
+                <ColumnDefinition Width="*"/>
+                <!-- Value -->
+                <ColumnDefinition Width="Auto"/>
+                <!-- Unit -->
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left accent strip — color reflects heat level -->
+            <Rectangle Grid.Column="0" Fill="{Binding HeatColor}"/>
+
+            <!-- Icon -->
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Icon}"
+                       Style="{StaticResource NodeIconStyle}"
+                       Margin="9,0,7,0"/>
+
+            <!-- Label -->
+            <TextBlock Grid.Column="2"
+                       Text="{Binding Label}"
+                       Style="{StaticResource NodeLabelStyle}"
+                       Margin="0,0,8,0"/>
+
+            <!-- Value -->
+            <TextBlock Grid.Column="3"
+                       Text="{Binding Value}"
+                       Style="{StaticResource NodeValueStyle}"
+                       Margin="0,0,2,0"/>
+
+            <!-- Unit -->
+            <TextBlock Grid.Column="4"
+                       Text="{Binding Unit}"
+                       Style="{StaticResource NodeUnitStyle}"
+                       Margin="0,0,10,0"/>
+        </Grid>
+    </Border>
+</UserControl>

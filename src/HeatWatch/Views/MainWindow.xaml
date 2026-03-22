@@ -1,0 +1,163 @@
+<Window x:Class="HeatWatch.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:HeatWatch.ViewModels"
+        xmlns:controls="clr-namespace:HeatWatch.Views.Controls"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="HeatWatch"
+        Width="270"
+        SizeToContent="Height"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        Topmost="{Binding IsTopmost}"
+        ShowInTaskbar="True"
+        FontFamily="Segoe UI Variable Display, Segoe UI"
+        d:DataContext="{d:DesignInstance Type=vm:MainViewModel}">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type vm:NodeViewModel}">
+            <controls:SensorNodeControl DataContext="{Binding}"/>
+        </DataTemplate>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
+
+    <Border Background="{StaticResource WindowBgBrush}"
+            BorderBrush="{StaticResource BorderBrush}"
+            BorderThickness="1"
+            CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Title bar -->
+            <Border Grid.Row="0"
+                    Background="{StaticResource TitleBarBrush}"
+                    CornerRadius="10,10,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid Margin="12,0,6,0">
+                    <!-- App name + icon -->
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="&#xE9CA;"
+                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                   FontSize="12"
+                                   Foreground="{StaticResource AccentBrush}"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,7,0"/>
+                        <TextBlock Text="HeatWatch"
+                                   Foreground="{StaticResource TextSecondaryBrush}"
+                                   FontSize="12"
+                                   FontWeight="Medium"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Action buttons -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center">
+                        <!-- Always on top toggle -->
+                        <ToggleButton Style="{StaticResource ToggleButtonStyle}"
+                                      IsChecked="{Binding IsTopmost}"
+                                      ToolTip="Always on Top"
+                                      Content="&#xE840;"/>
+                        <!-- Settings -->
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                Command="{Binding OpenSettingsCommand}"
+                                ToolTip="Settings"
+                                Content="&#xE713;"/>
+                        <!-- Close -->
+                        <Button Style="{StaticResource IconButtonStyle}"
+                                Click="Close_Click"
+                                ToolTip="Exit"
+                                Content="&#xE711;"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Separator -->
+            <Rectangle Grid.Row="0"
+                       Height="1"
+                       VerticalAlignment="Bottom"
+                       Fill="{StaticResource BorderBrush}"/>
+
+            <!-- Sensor node list -->
+            <ScrollViewer Grid.Row="1"
+                          Style="{StaticResource DarkScrollViewerStyle}"
+                          MaxHeight="580"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled">
+                <StackPanel Margin="8,7,8,8">
+                    <!-- Node items -->
+                    <ItemsControl ItemsSource="{Binding Nodes}" Focusable="False">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <!-- First-run hint — shown until the user opens Settings -->
+                    <Border Padding="10,8"
+                            Background="{StaticResource Surface2Brush}"
+                            BorderBrush="{StaticResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="0,2,0,4"
+                            Visibility="{Binding ShowSettingsHint, Converter={StaticResource BoolToVis}}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE713;"
+                                       FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                       FontSize="12"
+                                       Foreground="{StaticResource AccentBrush}"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,8,0"/>
+                            <TextBlock Foreground="{StaticResource TextSecondaryBrush}"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap">
+                                <Run Text="Add more sensors from the"/>
+                                <Run Text="Settings" Foreground="{StaticResource AccentBrush}" FontWeight="Medium"/>
+                                <Run Text="menu."/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Empty state — shown when no sensors are enabled -->
+                    <StackPanel HorizontalAlignment="Center"
+                                Margin="0,20,0,24">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Nodes.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="&#xE9CA;"
+                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                   FontSize="28"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="No sensors enabled"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="12"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,4"/>
+                        <TextBlock Text="Open Settings to choose sensors"
+                                   Foreground="{StaticResource TextMutedBrush}"
+                                   FontSize="11"
+                                   HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>
