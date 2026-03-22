@@ -34,6 +34,7 @@ TestResults/
 *.coverage
 *.coveragexml
 coverage/
+.claude
 
 # Logs and temp files
 *.log
@@ -65,5 +66,3 @@ secrets.json
 # Ignore NuGet global packages (optional)
 # ~/.nuget/packages/ is typically not in the repo
 .nuget/packages/
-
-# Keep this file in the repository
