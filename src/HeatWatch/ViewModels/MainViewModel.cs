@@ -19,6 +19,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
 
     [ObservableProperty] private bool _isTopmost;
     [ObservableProperty] private bool _showSettingsHint;
+    [ObservableProperty] private bool _showCpuDriverWarning;
 
     partial void OnIsTopmostChanged(bool value)
     {

@@ -3,6 +3,7 @@ using HeatWatch.Core.Hardware;
 using HeatWatch.Core.Persistence;
 using HeatWatch.ViewModels;
 using HeatWatch.Views;
+using LibreHardwareMonitor.Hardware;
 
 namespace HeatWatch;
 
@@ -32,7 +33,12 @@ public partial class App : Application
             _poller = new SensorPoller(_hardwareMonitor, settings.PollingIntervalMs);
 
             // 5. Wire up ViewModel
+            bool cpuTempDriverBlocked =
+                discovered.Any(r => r.HardwareType.Contains("Cpu") && r.Type == SensorType.Load) &&
+                !discovered.Any(r => r.HardwareType.Contains("Cpu") && r.Type == SensorType.Temperature);
+
             _mainVm = new MainViewModel(_poller, repo, settings);
+            _mainVm.ShowCpuDriverWarning = true; // TODO: remove, testing only
 
             // 6. Create and show window
             var window = new MainWindow { DataContext = _mainVm };

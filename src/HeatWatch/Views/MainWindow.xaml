@@ -101,6 +101,39 @@
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
 
+                    <!-- CPU driver warning — shown when security software has blocked hardware sensor access -->
+                    <Border Padding="10,8"
+                            Background="{StaticResource Surface2Brush}"
+                            BorderBrush="{StaticResource HeatWarmBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Margin="0,2,0,4"
+                            Visibility="{Binding ShowCpuDriverWarning, Converter={StaticResource BoolToVis}}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                <TextBlock Text="&#xE8C8;"
+                                           FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                           FontSize="12"
+                                           Foreground="{StaticResource HeatWarmBrush}"
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                                <TextBlock Text="CPU temps unavailable"
+                                           Foreground="{StaticResource TextPrimaryBrush}"
+                                           FontSize="11"
+                                           FontWeight="Medium"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                            <TextBlock Foreground="{StaticResource TextSecondaryBrush}"
+                                       FontSize="11"
+                                       TextWrapping="Wrap">
+                                <Run Text="Windows Defender blocked a driver HeatWatch needs to read CPU temperatures. Open"/>
+                                <Run Text="Windows Security → Virus &amp; threat protection → Protection history"
+                                     Foreground="{StaticResource AccentBrush}"/>
+                                <Run Text="and allow the blocked item."/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+
                     <!-- First-run hint — shown until the user opens Settings -->
                     <Border Padding="10,8"
                             Background="{StaticResource Surface2Brush}"
