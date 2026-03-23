@@ -8,7 +8,7 @@ Most hardware monitors are built around exploration, you open them when somethin
 
 The core idea is the **node**. Each node is a single sensor reading, a temperature, a clock speed, a fan RPM, displayed as a compact card with a color-coded accent strip. You choose which nodes are visible and in what order. Nothing is shown unless you ask for it.
 
-![Screenshot]("https://github.com/user-attachments/assets/264797be-12c2-4fbb-8bd4-25d9750e9486)
+![Screenshot](https://github.com/user-attachments/assets/264797be-12c2-4fbb-8bd4-25d9750e9486)
 
 ## Features
 
