@@ -10,6 +10,13 @@ The core idea is the **node**. Each node is a single sensor reading, a temperatu
 
 ![Screenshot](https://github.com/user-attachments/assets/264797be-12c2-4fbb-8bd4-25d9750e9486)
 
+![Screenshot](https://github.com/user-attachments/assets/ad9985cd-01d4-4615-8062-9fe990766452)
+
+![Screenshot](https://github.com/user-attachments/assets/8e1a1d78-7c24-4c3b-a96f-0242284b1b15)
+
+![Screenshot](https://github.com/user-attachments/assets/9b57218e-d141-4c1f-b4eb-28b92b31d220)
+
+
 ## Features
 
 - **Real-time sensor polling** at 1-second intervals
