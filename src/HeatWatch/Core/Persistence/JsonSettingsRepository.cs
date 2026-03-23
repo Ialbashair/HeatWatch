@@ -78,6 +78,9 @@ public sealed class JsonSettingsRepository
             });
         }
 
+        // Remove sensors that are redundant when a Package sensor exists
+        RemoveRedundantCpuTemps(result);
+
         // First run: enable exactly one CPU temp and one GPU temp
         if (isFirstRun)
             ApplyFirstRunDefaults(result);
@@ -88,6 +91,18 @@ public sealed class JsonSettingsRepository
 
         saved.Nodes = result;
         return saved;
+    }
+
+    private static void RemoveRedundantCpuTemps(List<NodeDefinition> nodes)
+    {
+        // "Core Average" and "Core Max" are derived metrics — redundant when a Package sensor is present
+        bool hasPackage = nodes.Any(n => IsCpuTemp(n) &&
+            n.Label.Contains("Package", StringComparison.OrdinalIgnoreCase));
+        if (!hasPackage) return;
+
+        nodes.RemoveAll(n => IsCpuTemp(n) && (
+            n.Label.Contains("Core Average", StringComparison.OrdinalIgnoreCase) ||
+            n.Label.Contains("Core Max",     StringComparison.OrdinalIgnoreCase)));
     }
 
     private static void ApplyFirstRunDefaults(List<NodeDefinition> nodes)

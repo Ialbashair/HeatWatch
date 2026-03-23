@@ -233,6 +233,34 @@
     </Style>
 
     <!-- ═══════════════════════════════════════════════
+         Hyperlink-style button (inline "Learn more" links)
+    ════════════════════════════════════════════════ -->
+    <Style x:Key="HyperlinkButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <TextBlock x:Name="Tb"
+                               Text="{TemplateBinding Content}"
+                               Foreground="{TemplateBinding Foreground}"
+                               TextDecorations="Underline"/>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Tb" Property="Foreground" Value="{DynamicResource AccentHoverBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════
          RadioButton (theme option cards in Appearance tab)
     ════════════════════════════════════════════════ -->
     <Style x:Key="ThemeOptionStyle" TargetType="RadioButton">
@@ -266,6 +294,122 @@
                                          Visibility="Collapsed"/>
                             </Border>
                             <ContentPresenter Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="Bd"        Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            <Setter TargetName="RadioRing" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                            <Setter TargetName="Dot"       Property="Visibility"  Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{DynamicResource Surface3Brush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════
+         Slider (opacity controls)
+    ════════════════════════════════════════════════ -->
+    <Style x:Key="DarkSliderStyle" TargetType="Slider">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Slider">
+                    <Grid Height="18" VerticalAlignment="Center">
+                        <Track x:Name="PART_Track">
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton Command="Slider.DecreaseLarge" Focusable="False">
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton">
+                                            <Border Height="4" CornerRadius="2"
+                                                    Background="{DynamicResource AccentBrush}"/>
+                                        </ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.DecreaseRepeatButton>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton Command="Slider.IncreaseLarge" Focusable="False">
+                                    <RepeatButton.Template>
+                                        <ControlTemplate TargetType="RepeatButton">
+                                            <Border Height="4" CornerRadius="2"
+                                                    Background="{DynamicResource Surface3Brush}"/>
+                                        </ControlTemplate>
+                                    </RepeatButton.Template>
+                                </RepeatButton>
+                            </Track.IncreaseRepeatButton>
+                            <Track.Thumb>
+                                <Thumb Width="14" Height="14">
+                                    <Thumb.Template>
+                                        <ControlTemplate TargetType="Thumb">
+                                            <Ellipse x:Name="Th"
+                                                     Fill="{DynamicResource AccentBrush}"/>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsDragging" Value="True">
+                                                    <Setter TargetName="Th" Property="Fill"
+                                                            Value="{DynamicResource AccentHoverBrush}"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Th" Property="Fill"
+                                                            Value="{DynamicResource AccentHoverBrush}"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Thumb.Template>
+                                </Thumb>
+                            </Track.Thumb>
+                        </Track>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════
+         RadioButton card with preview image on top (view picker)
+    ════════════════════════════════════════════════ -->
+    <Style x:Key="ViewOptionStyle" TargetType="RadioButton">
+        <Setter Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border x:Name="Bd"
+                            Background="{DynamicResource Surface2Brush}"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="6"
+                            Padding="10,10">
+                        <StackPanel>
+                            <!-- Visual preview area supplied as Content -->
+                            <ContentPresenter/>
+                            <!-- Radio ring + label row -->
+                            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                <Border x:Name="RadioRing"
+                                        Width="14" Height="14"
+                                        CornerRadius="7"
+                                        BorderThickness="1.5"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        VerticalAlignment="Center">
+                                    <Ellipse x:Name="Dot"
+                                             Width="7" Height="7"
+                                             Fill="{DynamicResource AccentBrush}"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             Visibility="Collapsed"/>
+                                </Border>
+                                <TextBlock Text="{TemplateBinding Tag}"
+                                           Foreground="{DynamicResource TextPrimaryBrush}"
+                                           FontSize="12"
+                                           Margin="8,0,0,0"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>

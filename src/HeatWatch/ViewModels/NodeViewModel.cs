@@ -16,6 +16,22 @@ public sealed partial class NodeViewModel : ObservableObject
     [ObservableProperty] private string _icon;
 
     private readonly SensorType _sensorType;
+    private float? _lastValue;
+    private bool _useHeatColors = true;
+
+    public bool UseHeatColors
+    {
+        get => _useHeatColors;
+        set
+        {
+            if (_useHeatColors == value) return;
+            _useHeatColors = value;
+            if (_lastValue.HasValue)
+                HeatColor = (_sensorType == SensorType.Temperature && _useHeatColors)
+                    ? GetTemperatureColor(_lastValue.Value)
+                    : _neutralAccent;
+        }
+    }
 
     public NodeViewModel(NodeDefinition definition)
     {
@@ -32,6 +48,7 @@ public sealed partial class NodeViewModel : ObservableObject
             return; // keep showing "--" until a real reading arrives
 
         float v = value.Value;
+        _lastValue = v;
 
         Value = _sensorType switch
         {
@@ -51,7 +68,7 @@ public sealed partial class NodeViewModel : ObservableObject
         else
             Unit = GetUnit(_sensorType);
 
-        HeatColor = _sensorType == SensorType.Temperature
+        HeatColor = (_sensorType == SensorType.Temperature && _useHeatColors)
             ? GetTemperatureColor(v)
             : _neutralAccent;
     }

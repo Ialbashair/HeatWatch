@@ -39,4 +39,18 @@ public partial class MainWindow : Window
         _vm?.Dispose();
         base.OnClosed(e);
     }
+
+    protected override void OnMouseEnter(System.Windows.Input.MouseEventArgs e)
+    {
+        base.OnMouseEnter(e);
+        _vm?.NotifyMouseEntered();
+    }
+
+    protected override void OnMouseLeave(System.Windows.Input.MouseEventArgs e)
+    {
+        base.OnMouseLeave(e);
+        _vm?.NotifyMouseLeft();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e) { }
 }

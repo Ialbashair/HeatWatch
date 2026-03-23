@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="HeatWatch — Settings"
-        Width="600"
+        Width="640"
         Height="520"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -16,6 +16,10 @@
         WindowStartupLocation="CenterScreen"
         FontFamily="Segoe UI Variable Display, Segoe UI"
         d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </Window.Resources>
 
     <Border Background="{DynamicResource WindowBgBrush}"
             BorderBrush="{DynamicResource BorderBrush}"
@@ -61,77 +65,127 @@
                         BorderBrush="{DynamicResource BorderBrush}"
                         BorderThickness="0,0,1,0">
                     <Grid>
-                        <StackPanel Margin="0,10,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                        <!-- Section label -->
-                        <TextBlock Text="HEATWATCH"
-                                   Foreground="{DynamicResource TextMutedBrush}"
-                                   FontSize="9"
-                                   FontWeight="SemiBold"
-                                   Margin="16,0,0,8"/>
+                        <!-- Row 0: Main nav -->
+                        <StackPanel Grid.Row="0" Margin="0,10,0,0">
+                            <TextBlock Text="HEATWATCH"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       FontSize="9"
+                                       FontWeight="SemiBold"
+                                       Margin="16,0,0,8"/>
 
-                        <ListBox Style="{StaticResource NavListStyle}"
-                                 SelectedIndex="{Binding SelectedTabIndex}"
-                                 ItemContainerStyle="{StaticResource NavItemStyle}">
+                            <ListBox Style="{StaticResource NavListStyle}"
+                                     SelectedIndex="{Binding SelectedTabIndex}"
+                                     ItemContainerStyle="{StaticResource NavItemStyle}">
 
-                            <!-- Sensors -->
-                            <ListBoxItem>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE9CA;"
-                                               FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                               FontSize="14"
-                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="Sensors"
-                                               FontSize="12"
-                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                               Margin="10,0,0,0"
-                                               VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </ListBoxItem>
+                                <!-- Sensors -->
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE9CA;"
+                                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                   FontSize="14"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="Sensors"
+                                                   FontSize="12"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                   Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </ListBoxItem>
 
-                            <!-- Appearance -->
-                            <ListBoxItem>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE790;"
-                                               FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                               FontSize="14"
-                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="Appearance"
-                                               FontSize="12"
-                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                               Margin="10,0,0,0"
-                                               VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </ListBoxItem>
+                                <!-- Appearance -->
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE790;"
+                                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                   FontSize="14"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="Appearance"
+                                                   FontSize="12"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                   Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </ListBoxItem>
 
-                            <!-- Startup -->
-                            <ListBoxItem>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="&#xE7FC;"
-                                               FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
-                                               FontSize="14"
-                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                               VerticalAlignment="Center"/>
-                                    <TextBlock Text="Startup"
-                                               FontSize="12"
-                                               Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                               Margin="10,0,0,0"
-                                               VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </ListBoxItem>
+                                <!-- Behaviour -->
+                                <ListBoxItem>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="&#xE7FC;"
+                                                   FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                   FontSize="14"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                   VerticalAlignment="Center"/>
+                                        <TextBlock Text="Behaviour"
+                                                   FontSize="12"
+                                                   Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                   Margin="10,0,0,0"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </ListBoxItem>
 
-                        </ListBox>
+                            </ListBox>
                         </StackPanel>
 
-                        <!-- Version pinned to bottom -->
-                        <TextBlock Text="{Binding AppVersion}"
+                        <!-- Row 1: Learn More — only visible when driver is blocked -->
+                        <StackPanel Grid.Row="1"
+                                    Visibility="{Binding ShowDriverWarningTab, Converter={StaticResource BoolToVis}}">
+                            <Rectangle Height="1"
+                                       Fill="{DynamicResource BorderBrush}"
+                                       Margin="12,8,12,4"/>
+                            <Button Command="{Binding SelectLearnMoreTabCommand}"
+                                    Margin="6,1"
+                                    FocusVisualStyle="{x:Null}">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border x:Name="Bd"
+                                                Background="Transparent"
+                                                CornerRadius="6"
+                                                Padding="10,9"
+                                                Cursor="Hand">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="&#xE7BA;"
+                                                           FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                                           FontSize="14"
+                                                           Foreground="{DynamicResource HeatWarmBrush}"
+                                                           VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="Lbl"
+                                                           Text="Learn More"
+                                                           FontSize="12"
+                                                           Foreground="{DynamicResource TextSecondaryBrush}"
+                                                           Margin="10,0,0,0"
+                                                           VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="Bd"  Property="Background" Value="{DynamicResource NavItemHoverBrush}"/>
+                                                <Setter TargetName="Lbl" Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding IsLearnMoreSelected}" Value="True">
+                                                <Setter TargetName="Bd"  Property="Background" Value="{DynamicResource NavItemSelectedBrush}"/>
+                                                <Setter TargetName="Lbl" Property="Foreground" Value="{DynamicResource TextPrimaryBrush}"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Row 2: Version -->
+                        <TextBlock Grid.Row="2"
+                                   Text="{Binding AppVersion}"
                                    Foreground="{DynamicResource TextMutedBrush}"
                                    FontSize="10"
-                                   VerticalAlignment="Bottom"
                                    HorizontalAlignment="Left"
-                                   Margin="16,0,0,12"/>
+                                   Margin="16,6,0,12"/>
                     </Grid>
                 </Border>
 
@@ -295,37 +349,251 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <StackPanel Margin="16,14,16,0">
+                        <ScrollViewer Style="{StaticResource DarkScrollViewerStyle}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                        <StackPanel Margin="16,14,16,16">
                             <TextBlock Text="Appearance"
                                        Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,20"/>
 
+                            <!-- THEME — three options in a single row -->
                             <TextBlock Text="THEME"
                                        Foreground="{DynamicResource TextMutedBrush}"
                                        FontSize="10"
                                        FontWeight="SemiBold"
                                        Margin="0,0,0,10"/>
 
-                            <RadioButton Content="Dark"
-                                         Style="{StaticResource ThemeOptionStyle}"
-                                         GroupName="AppTheme"
-                                         IsChecked="{Binding IsThemeDark}"/>
+                            <UniformGrid Columns="3" Margin="0,0,0,0">
+                                <RadioButton Content="Dark"
+                                             Style="{StaticResource ThemeOptionStyle}"
+                                             GroupName="AppTheme"
+                                             IsChecked="{Binding IsThemeDark}"
+                                             Margin="0,0,6,0"/>
+                                <RadioButton Content="Light"
+                                             Style="{StaticResource ThemeOptionStyle}"
+                                             GroupName="AppTheme"
+                                             IsChecked="{Binding IsThemeLight}"
+                                             Margin="0,0,6,0"/>
+                                <RadioButton Content="System Default"
+                                             Style="{StaticResource ThemeOptionStyle}"
+                                             GroupName="AppTheme"
+                                             IsChecked="{Binding IsThemeSystem}"
+                                             Margin="0"/>
+                            </UniformGrid>
 
-                            <RadioButton Content="Light"
-                                         Style="{StaticResource ThemeOptionStyle}"
-                                         GroupName="AppTheme"
-                                         IsChecked="{Binding IsThemeLight}"/>
+                            <!-- VIEW — two cards side by side with visual previews -->
+                            <TextBlock Text="VIEW"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Margin="0,20,0,10"/>
 
-                            <RadioButton Content="System Default"
-                                         Style="{StaticResource ThemeOptionStyle}"
-                                         GroupName="AppTheme"
-                                         IsChecked="{Binding IsThemeSystem}"/>
+                            <UniformGrid Columns="2">
+
+                                <!-- Stacked view card -->
+                                <RadioButton Style="{StaticResource ViewOptionStyle}"
+                                             GroupName="AppView"
+                                             IsChecked="{Binding IsViewStacked}"
+                                             Tag="Stacked"
+                                             Margin="0,0,6,0">
+                                    <!-- Preview: 3 horizontal rows with left accent strip -->
+                                    <StackPanel>
+                                        <Border Height="9" CornerRadius="2" Margin="0,0,0,3"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Width="3" HorizontalAlignment="Left"
+                                                       Fill="{DynamicResource HeatCoolBrush}"/>
+                                        </Border>
+                                        <Border Height="9" CornerRadius="2" Margin="0,0,0,3"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Width="3" HorizontalAlignment="Left"
+                                                       Fill="{DynamicResource HeatWarmBrush}"/>
+                                        </Border>
+                                        <Border Height="9" CornerRadius="2"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Width="3" HorizontalAlignment="Left"
+                                                       Fill="{DynamicResource HeatHotBrush}"/>
+                                        </Border>
+                                    </StackPanel>
+                                </RadioButton>
+
+                                <!-- Grid view card -->
+                                <RadioButton Style="{StaticResource ViewOptionStyle}"
+                                             GroupName="AppView"
+                                             IsChecked="{Binding IsViewGrid}"
+                                             Tag="Grid"
+                                             Margin="0">
+                                    <!-- Preview: 2 rows × 3 cols mini cards with bottom heat strip -->
+                                    <UniformGrid Columns="3">
+                                        <Border Margin="0,0,3,3" CornerRadius="2" Height="18"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Height="2" VerticalAlignment="Bottom"
+                                                       Fill="{DynamicResource HeatCoolBrush}"/>
+                                        </Border>
+                                        <Border Margin="0,0,3,3" CornerRadius="2" Height="18"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Height="2" VerticalAlignment="Bottom"
+                                                       Fill="{DynamicResource HeatWarmBrush}"/>
+                                        </Border>
+                                        <Border Margin="0,0,0,3" CornerRadius="2" Height="18"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Height="2" VerticalAlignment="Bottom"
+                                                       Fill="{DynamicResource HeatHotBrush}"/>
+                                        </Border>
+                                        <Border Margin="0,0,3,0" CornerRadius="2" Height="18"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Height="2" VerticalAlignment="Bottom"
+                                                       Fill="{DynamicResource AccentBrush}"/>
+                                        </Border>
+                                        <Border Margin="0,0,3,0" CornerRadius="2" Height="18"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Height="2" VerticalAlignment="Bottom"
+                                                       Fill="{DynamicResource HeatCritBrush}"/>
+                                        </Border>
+                                        <Border Margin="0,0,0,0" CornerRadius="2" Height="18"
+                                                Background="{DynamicResource Surface3Brush}"
+                                                ClipToBounds="True">
+                                            <Rectangle Height="2" VerticalAlignment="Bottom"
+                                                       Fill="{DynamicResource HeatNeutralBrush}"/>
+                                        </Border>
+                                    </UniformGrid>
+                                </RadioButton>
+
+                            </UniformGrid>
+
+                            <!-- OPACITY -->
+                            <TextBlock Text="OPACITY"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Margin="0,20,0,10"/>
+
+                            <!-- Node opacity -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,6">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="Node opacity"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding NodeOpacity, StringFormat='{}{0:P0}'}"
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="11"/>
+                                    </Grid>
+                                    <Slider Style="{StaticResource DarkSliderStyle}"
+                                            Value="{Binding NodeOpacity}"
+                                            Minimum="0.1" Maximum="1.0"
+                                            TickFrequency="0.05" IsSnapToTickEnabled="True"
+                                            Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Background opacity -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,0">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="Background opacity"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Text="{Binding BackgroundOpacity, StringFormat='{}{0:P0}'}"
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="11"/>
+                                    </Grid>
+                                    <Slider Style="{StaticResource DarkSliderStyle}"
+                                            Value="{Binding BackgroundOpacity}"
+                                            Minimum="0.1" Maximum="1.0"
+                                            TickFrequency="0.05" IsSnapToTickEnabled="True"
+                                            Margin="0,8,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- DISPLAY -->
+                            <TextBlock Text="DISPLAY"
+                                       Foreground="{DynamicResource TextMutedBrush}"
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Margin="0,20,0,10"/>
+
+                            <!-- Focus Mode -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,6">
+                                <CheckBox Style="{StaticResource DarkCheckBoxStyle}"
+                                          IsChecked="{Binding AutoHideControls}">
+                                    <StackPanel Margin="2,0,0,0">
+                                        <TextBlock Text="Focus Mode"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="Hide the title bar after 3 seconds when the cursor leaves the window."
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="10"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </CheckBox>
+                            </Border>
+
+                            <!-- Heat Indicators -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,0">
+                                <CheckBox Style="{StaticResource DarkCheckBoxStyle}"
+                                          IsChecked="{Binding UseHeatColors}">
+                                    <StackPanel Margin="2,0,0,0">
+                                        <TextBlock Text="Heat Indicators"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="Colour-code sensor accents green, amber, and red based on temperature level."
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="10"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </CheckBox>
+                            </Border>
+
                         </StackPanel>
+                        </ScrollViewer>
                     </Grid>
 
-                    <!-- ── Startup tab ── -->
+                    <!-- ── Behaviour tab ── -->
                     <Grid>
                         <Grid.Style>
                             <Style TargetType="Grid">
@@ -337,17 +605,315 @@
                                 </Style.Triggers>
                             </Style>
                         </Grid.Style>
-                        <StackPanel>
-                            <TextBlock Text="Startup"
+                        <StackPanel Margin="16,14,16,0">
+                            <TextBlock Text="Behaviour"
                                        Foreground="{DynamicResource TextPrimaryBrush}"
                                        FontSize="18"
                                        FontWeight="SemiBold"
-                                       Margin="16,14,16,4"/>
-                            <TextBlock Text="Startup behavior options coming soon."
+                                       Margin="0,0,0,20"/>
+
+                            <TextBlock Text="GENERAL"
                                        Foreground="{DynamicResource TextMutedBrush}"
-                                       FontSize="12"
-                                       Margin="16,6,16,0"/>
+                                       FontSize="10"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,10"/>
+
+                            <!-- Start with Windows -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,6">
+                                <CheckBox Style="{StaticResource DarkCheckBoxStyle}"
+                                          IsChecked="{Binding IsRunAtStartup}">
+                                    <StackPanel Margin="2,0,0,0">
+                                        <TextBlock Text="Start with Windows"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="Launch HeatWatch automatically when you sign in."
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="10"
+                                                   Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </CheckBox>
+                            </Border>
+
+                            <!-- Allow window resizing -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,6">
+                                <CheckBox Style="{StaticResource DarkCheckBoxStyle}"
+                                          IsChecked="{Binding IsResizable}">
+                                    <StackPanel Margin="2,0,0,0">
+                                        <TextBlock Text="Allow window resizing"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="Show a resize grip so you can adjust the window dimensions."
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="10"
+                                                   Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </CheckBox>
+                            </Border>
                         </StackPanel>
+                    </Grid>
+
+                    <!-- ── Learn More tab (index 3) — driver blocked ── -->
+                    <Grid>
+                        <Grid.Style>
+                            <Style TargetType="Grid">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SelectedTabIndex}" Value="3">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <ScrollViewer Style="{StaticResource DarkScrollViewerStyle}"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                            <StackPanel Margin="16,14,16,16">
+
+                                <!-- Title row with warning icon -->
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+                                    <TextBlock Text="&#xE7BA;"
+                                               FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                               FontSize="20"
+                                               Foreground="{DynamicResource HeatWarmBrush}"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBlock Text="CPU Temperatures Blocked"
+                                               Foreground="{DynamicResource TextPrimaryBrush}"
+                                               FontSize="18"
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                           FontSize="12"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,20">
+                                    HeatWatch uses a small kernel driver to read CPU temperatures directly from hardware registers. Windows Defender has blocked or removed that driver, which is why CPU temperature sensors are not appearing. GPU and other sensors are unaffected.
+                                </TextBlock>
+
+                                <!-- Why this happens -->
+                                <TextBlock Text="WHY THIS HAPPENS"
+                                           Foreground="{DynamicResource TextMutedBrush}"
+                                           FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,8"/>
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,20">
+                                    <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                               FontSize="12"
+                                               TextWrapping="Wrap"
+                                               LineHeight="20">
+                                        HeatWatch relies on <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">WinRing0x64.sys</Run>, an open-source kernel driver used by many hardware monitoring tools. Because the driver accesses hardware at a low level, Windows Defender's behavioural protection can flag it as a potentially unwanted application.
+                                    </TextBlock>
+                                </Border>
+
+                                <!-- How to fix it -->
+                                <TextBlock Text="HOW TO FIX IT"
+                                           Foreground="{DynamicResource TextMutedBrush}"
+                                           FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,8"/>
+
+                                <!-- Step 1 -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="1"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0,1,0,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap">
+                                            Press <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">Start</Run> and search for <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">Windows Security</Run>, then open it.
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Step 2 -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="2"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0,1,0,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap">
+                                            Go to <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">Virus &amp; threat protection</Run>.
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Step 3 -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="3"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0,1,0,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap">
+                                            Under "Current threats", click <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">Protection history</Run>.
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Step 4 -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="4"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0,1,0,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap">
+                                            Find the entry labelled <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">WinRing0x64</Run> or <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">HeatWatch</Run>. It may be listed as "Severe" or "Potentially unwanted app".
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Step 5 -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,4">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="5"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0,1,0,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap">
+                                            Click the entry to expand it, then choose <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">Actions → Allow on device</Run>.
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Step 6 -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource BorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10"
+                                        Margin="0,0,0,16">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="22"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0"
+                                                   Text="6"
+                                                   Foreground="{DynamicResource AccentBrush}"
+                                                   FontSize="12"
+                                                   FontWeight="SemiBold"
+                                                   VerticalAlignment="Top"
+                                                   Margin="0,1,0,0"/>
+                                        <TextBlock Grid.Column="1"
+                                                   Foreground="{DynamicResource TextSecondaryBrush}"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap">
+                                            <Run Foreground="{DynamicResource TextPrimaryBrush}" FontWeight="Medium">Restart HeatWatch.</Run> CPU temperatures should now appear.
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <!-- Fallback note -->
+                                <Border Background="{DynamicResource Surface2Brush}"
+                                        BorderBrush="{DynamicResource HeatWarmBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="12,10">
+                                    <TextBlock Foreground="{DynamicResource TextSecondaryBrush}"
+                                               FontSize="11"
+                                               TextWrapping="Wrap">
+                                        <Run Text="&#xE946;"
+                                             FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                             Foreground="{DynamicResource HeatWarmBrush}"/>
+                                        <Run Text=" If the entry is not in Protection history, Defender may have already deleted the file. Re-installing HeatWatch will restore the driver."/>
+                                    </TextBlock>
+                                </Border>
+
+                            </StackPanel>
+                        </ScrollViewer>
                     </Grid>
 
                 </Grid>

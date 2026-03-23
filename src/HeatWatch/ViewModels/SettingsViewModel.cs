@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HeatWatch.Core.Models;
 using HeatWatch.Core.Persistence;
+using HeatWatch.Core.Startup;
 using HeatWatch.Core.Theming;
 
 namespace HeatWatch.ViewModels;
@@ -24,7 +25,20 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty] private int _selectedTabIndex = 0;
     [ObservableProperty] private string _searchText = string.Empty;
+    [ObservableProperty] private double _nodeOpacity;
+    [ObservableProperty] private double _backgroundOpacity;
+    [ObservableProperty] private bool _autoHideControls;
+    [ObservableProperty] private bool _useHeatColors;
+
+    public bool ShowDriverWarningTab => _mainVm.ShowCpuDriverWarning;
+    public bool IsLearnMoreSelected  => _selectedTabIndex == 3;
+
+    partial void OnSelectedTabIndexChanged(int value) =>
+        OnPropertyChanged(nameof(IsLearnMoreSelected));
     [ObservableProperty] private AppTheme _selectedTheme;
+    [ObservableProperty] private AppView _selectedView;
+    [ObservableProperty] private bool _isRunAtStartup;
+    [ObservableProperty] private bool _isResizable;
 
     partial void OnSearchTextChanged(string value) => FilteredNodes.Refresh();
 
@@ -35,16 +49,32 @@ public sealed partial class SettingsViewModel : ObservableObject
         OnPropertyChanged(nameof(IsThemeSystem));
     }
 
+    partial void OnSelectedViewChanged(AppView value)
+    {
+        OnPropertyChanged(nameof(IsViewStacked));
+        OnPropertyChanged(nameof(IsViewGrid));
+    }
+
     public bool IsThemeDark   { get => _selectedTheme == AppTheme.Dark;          set { if (value) SelectedTheme = AppTheme.Dark; } }
     public bool IsThemeLight  { get => _selectedTheme == AppTheme.Light;         set { if (value) SelectedTheme = AppTheme.Light; } }
     public bool IsThemeSystem { get => _selectedTheme == AppTheme.SystemDefault; set { if (value) SelectedTheme = AppTheme.SystemDefault; } }
+
+    public bool IsViewStacked { get => _selectedView == AppView.Stacked; set { if (value) SelectedView = AppView.Stacked; } }
+    public bool IsViewGrid    { get => _selectedView == AppView.Grid;    set { if (value) SelectedView = AppView.Grid; } }
 
     public SettingsViewModel(AppSettings settings, MainViewModel mainVm, JsonSettingsRepository repo)
     {
         _settings = settings;
         _mainVm = mainVm;
         _repo = repo;
-        _selectedTheme = settings.Theme;
+        _selectedTheme     = settings.Theme;
+        _selectedView      = settings.View;
+        _isRunAtStartup    = StartupManager.IsEnabled();
+        _isResizable       = settings.IsResizable;
+        _nodeOpacity       = settings.NodeOpacity;
+        _backgroundOpacity = settings.BackgroundOpacity;
+        _autoHideControls  = settings.AutoHideControls;
+        _useHeatColors     = settings.UseHeatColors;
 
         AllNodes = new ObservableCollection<NodeDefinition>(
             settings.Nodes.Select(n => new NodeDefinition
@@ -99,13 +129,30 @@ public sealed partial class SettingsViewModel : ObservableObject
     [RelayCommand]
     public void Save(System.Windows.Window window)
     {
-        _settings.Nodes = [.. AllNodes];
-        _settings.Theme = SelectedTheme;
+        _settings.Nodes            = [.. AllNodes];
+        _settings.Theme            = SelectedTheme;
+        _settings.View             = SelectedView;
+        _settings.IsResizable      = IsResizable;
+        _settings.NodeOpacity      = NodeOpacity;
+        _settings.BackgroundOpacity = BackgroundOpacity;
+        _settings.AutoHideControls = AutoHideControls;
+        _settings.UseHeatColors    = UseHeatColors;
         _mainVm.RebuildNodes(_settings.Nodes);
+        _mainVm.AppView            = SelectedView;
+        _mainVm.IsResizable        = IsResizable;
+        _mainVm.NodeOpacity        = NodeOpacity;
+        _mainVm.BackgroundOpacity  = BackgroundOpacity;
+        _mainVm.AutoHideControls   = AutoHideControls;
+        _mainVm.UseHeatColors      = UseHeatColors;
         ThemeManager.Apply(SelectedTheme);
+        if (IsRunAtStartup) StartupManager.Enable();
+        else                StartupManager.Disable();
         _repo.Save(_settings);
         window.Close();
     }
+
+    [RelayCommand]
+    public void SelectLearnMoreTab() => SelectedTabIndex = 3;
 
     [RelayCommand]
     public void Cancel(System.Windows.Window window) => window.Close();
