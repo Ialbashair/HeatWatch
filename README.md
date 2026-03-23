@@ -1,22 +1,37 @@
 # HeatWatch
 
-A minimalist, always-on-top hardware monitor for Windows. HeatWatch sits in the corner of your screen and shows you exactly the sensor data you care about — nothing more. No charts, no tabs, no bloat. Just clean, real-time readings in a compact dark-themed overlay.
+A minimalist, always-on-top hardware monitor for Windows. HeatWatch sits in the corner of your screen and shows you exactly the sensor data you care about, nothing more. No charts, no tabs, no bloat. Just clean, real-time readings in a compact dark-themed overlay.
 
 ## Concept
 
-Most hardware monitors are built around exploration — you open them when something feels wrong and dig through dozens of tabs to find what you're looking for. HeatWatch is built for the opposite use case: persistent, ambient awareness. You configure it once, pin it to your screen, and it stays out of the way while always being readable at a glance.
+Most hardware monitors are built around exploration, you open them when something feels wrong and dig through dozens of tabs to find what you're looking for. HeatWatch is built for the opposite use case: persistent, ambient awareness. You configure it once, pin it to your screen, and it stays out of the way while always being readable at a glance.
 
-The core idea is the **node**. Each node is a single sensor reading — a temperature, a clock speed, a fan RPM — displayed as a compact card with a color-coded accent strip. You choose which nodes are visible and in what order. Nothing is shown unless you ask for it.
+The core idea is the **node**. Each node is a single sensor reading, a temperature, a clock speed, a fan RPM, displayed as a compact card with a color-coded accent strip. You choose which nodes are visible and in what order. Nothing is shown unless you ask for it.
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/264797be-12c2-4fbb-8bd4-25d9750e9486" width="30%" />
+  <img src="https://github.com/user-attachments/assets/9b57218e-d141-4c1f-b4eb-28b92b31d220" width="30%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3e3a7cbd-c39d-4a3e-a21f-23a7e6f9b6f0" width="30%" />
+  <img src="https://github.com/user-attachments/assets/ff8a7ecd-bf95-4825-8025-4f34dcdba102" width="30%" />
+</p>
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ad9985cd-01d4-4615-8062-9fe990766452" width="48%" />
+  <img src="https://github.com/user-attachments/assets/8e1a1d78-7c24-4c3b-a96f-0242284b1b15" width="48%" />
+</p>
 
 ## Features
 
 - **Real-time sensor polling** at 1-second intervals
-- **Fully customizable node list** — enable, disable, reorder, and rename any sensor
-- **Color-coded temperature indicators** — green, yellow, orange, and red accent strips that reflect heat at a glance
-- **Always-on-top toggle** — pin the window above all other applications
-- **Persistent window position** — remembers where you left it across launches
-- **Smart first-run defaults** — automatically enables your CPU package temp and GPU core temp on first launch
-- **Drag to reposition** — click and drag the title bar anywhere on screen
+- **Fully customizable node list**, enable, disable, reorder, and rename any sensor
+- **Color-coded temperature indicators**, green, yellow, orange, and red accent strips that reflect heat at a glance
+- **Always-on-top toggle**, pin the window above all other applications
+- **Persistent window position**, remembers where you left it across launches
+- **Smart first-run defaults**, automatically enables your CPU package temp and GPU core temp on first launch
+- **Drag to reposition**, click and drag the title bar anywhere on screen
 
 ## Supported Sensors
 
@@ -31,10 +46,10 @@ The core idea is the **node**. Each node is a single sensor reading — a temper
 
 ## Built With
 
-- **[.NET 8](https://dotnet.microsoft.com/)** — runtime and application framework
-- **[WPF](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)** — UI framework with full XAML styling
-- **[LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)** — open-source hardware sensor library that reads CPU, GPU, motherboard, and memory data via Windows APIs and kernel-level drivers
-- **[CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/)** — source-generated MVVM bindings and observable properties
+- **[.NET 8](https://dotnet.microsoft.com/)**, runtime and application framework
+- **[WPF](https://learn.microsoft.com/en-us/dotnet/desktop/wpf/)**, UI framework with full XAML styling
+- **[LibreHardwareMonitor](https://github.com/LibreHardwareMonitor/LibreHardwareMonitor)**, open-source hardware sensor library that reads CPU, GPU, motherboard, and memory data via Windows APIs and kernel-level drivers
+- **[CommunityToolkit.Mvvm](https://learn.microsoft.com/en-us/dotnet/communitytoolkit/mvvm/)**, source-generated MVVM bindings and observable properties
 
 ---
 
@@ -42,9 +57,9 @@ The core idea is the **node**. Each node is a single sensor reading — a temper
 
 ### Why this happens
 
-To read CPU temperatures, HeatWatch uses a kernel-mode driver called **WinRing0** (provided by LibreHardwareMonitor). This driver needs low-level hardware access to read the CPU's internal temperature registers — the same approach used by HWiNFO, Core Temp, and other monitoring tools.
+To read CPU temperatures, HeatWatch uses a kernel-mode driver called **WinRing0** (provided by LibreHardwareMonitor). This driver needs low-level hardware access to read the CPU's internal temperature registers, the same approach used by HWiNFO, Core Temp, and other monitoring tools.
 
-Windows Defender sometimes flags and blocks WinRing0 because the same driver has historically been abused by malware. This is a false positive — HeatWatch only uses it to read sensor data.
+Windows Defender sometimes flags and blocks WinRing0 because the same driver has historically been abused by malware. This is a false positive, HeatWatch only uses it to read sensor data.
 
 When the driver is blocked, CPU temperatures will be unavailable. GPU temperatures and all other sensors are unaffected, as they don't require the driver.
 
