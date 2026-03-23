@@ -8,14 +8,20 @@ Most hardware monitors are built around exploration, you open them when somethin
 
 The core idea is the **node**. Each node is a single sensor reading, a temperature, a clock speed, a fan RPM, displayed as a compact card with a color-coded accent strip. You choose which nodes are visible and in what order. Nothing is shown unless you ask for it.
 
-![Screenshot](https://github.com/user-attachments/assets/264797be-12c2-4fbb-8bd4-25d9750e9486)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/264797be-12c2-4fbb-8bd4-25d9750e9486" width="30%" />
+  <img src="https://github.com/user-attachments/assets/9b57218e-d141-4c1f-b4eb-28b92b31d220" width="30%" />
+</p>
 
-![Screenshot](https://github.com/user-attachments/assets/ad9985cd-01d4-4615-8062-9fe990766452)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/3e3a7cbd-c39d-4a3e-a21f-23a7e6f9b6f0" width="30%" />
+  <img src="https://github.com/user-attachments/assets/ff8a7ecd-bf95-4825-8025-4f34dcdba102" width="30%" />
+</p>
 
-![Screenshot](https://github.com/user-attachments/assets/8e1a1d78-7c24-4c3b-a96f-0242284b1b15)
-
-![Screenshot](https://github.com/user-attachments/assets/9b57218e-d141-4c1f-b4eb-28b92b31d220)
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/ad9985cd-01d4-4615-8062-9fe990766452" width="48%" />
+  <img src="https://github.com/user-attachments/assets/8e1a1d78-7c24-4c3b-a96f-0242284b1b15" width="48%" />
+</p>
 
 ## Features
 
