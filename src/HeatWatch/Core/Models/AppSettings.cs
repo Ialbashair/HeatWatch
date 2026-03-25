@@ -10,8 +10,6 @@ public sealed class AppSettings
     public AppTheme Theme { get; set; } = AppTheme.SystemDefault;
     public AppView View { get; set; } = AppView.Grid;
     public bool IsResizable { get; set; } = false;
-    public double NodeOpacity { get; set; } = 0.8;
-    public double BackgroundOpacity { get; set; } = 0.5;
     public bool AutoHideControls { get; set; } = false;
     public bool UseHeatColors { get; set; } = true;
     public List<NodeDefinition> Nodes { get; set; } = new List<NodeDefinition>();

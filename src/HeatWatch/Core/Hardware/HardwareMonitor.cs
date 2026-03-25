@@ -6,6 +6,8 @@ public sealed class HardwareMonitor : IDisposable
 {
     private readonly Computer _computer;
     private readonly UpdateVisitor _visitor = new();
+    private readonly List<SensorReading> _readings = [];
+    private readonly HashSet<string> _seenIds = [];
     private bool _disposed;
 
     private static readonly HashSet<SensorType> SupportedTypes =
@@ -41,12 +43,12 @@ public sealed class HardwareMonitor : IDisposable
 
         _computer.Accept(_visitor);
 
-        var readings = new List<SensorReading>();
-        var seenIds = new HashSet<string>();
+        _readings.Clear();
+        _seenIds.Clear();
         foreach (IHardware hardware in _computer.Hardware)
-            CollectFromHardware(hardware, readings, seenIds);
+            CollectFromHardware(hardware, _readings, _seenIds);
 
-        return readings;
+        return _readings;
     }
 
     private static void CollectFromHardware(IHardware hardware, List<SensorReading> readings, HashSet<string> seenIds)

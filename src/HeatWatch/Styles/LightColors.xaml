@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <!-- Window background -->
-    <Color x:Key="WindowBgColor">#E6F3F3F3</Color>
+    <Color x:Key="WindowBgColor">#FFF3F3F3</Color>
     <SolidColorBrush x:Key="WindowBgBrush" Color="{StaticResource WindowBgColor}"/>
 
     <!-- Surfaces -->

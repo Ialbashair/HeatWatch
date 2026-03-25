@@ -9,19 +9,25 @@
         Title="HeatWatch"
         Width="300"
         Height="210"
-        MinWidth="250"
-        MinHeight="89"
+        MinWidth="{Binding WindowMinWidth}"
+        MinHeight="{Binding WindowMinHeight}"
         SizeToContent="{Binding SizeToContent}"
         WindowStyle="None"
-        AllowsTransparency="True"
-        Background="Transparent"
+        Background="{DynamicResource WindowBgBrush}"
         ResizeMode="{Binding ResizeMode}"
         Topmost="{Binding IsTopmost}"
         ShowInTaskbar="True"
         FontFamily="Segoe UI Variable Display, Segoe UI"
         d:DataContext="{d:DesignInstance Type=vm:MainViewModel}">
 
-    <Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"
+                      ResizeBorderThickness="5"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
+
+<Window.Resources>
         <DataTemplate DataType="{x:Type vm:NodeViewModel}">
             <controls:SensorNodeControl DataContext="{Binding}"/>
         </DataTemplate>
@@ -29,15 +35,8 @@
     </Window.Resources>
 
     <Border CornerRadius="10"
-            Background="Transparent">
+            Background="{DynamicResource WindowBgBrush}">
         <Grid>
-            <!-- Background layer — opacity controlled independently from content -->
-            <Border Background="{DynamicResource WindowBgBrush}"
-                    CornerRadius="9"
-                    Opacity="{Binding BackgroundOpacity}"/>
-
-            <!-- Content layer -->
-            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
@@ -100,16 +99,17 @@
             <ScrollViewer Grid.Row="1"
                           Style="{StaticResource DarkScrollViewerStyle}"
                           MaxHeight="580"
-                          Opacity="{Binding NodeOpacity}"
                           VerticalScrollBarVisibility="Auto"
                           HorizontalScrollBarVisibility="Disabled">
                 <StackPanel Margin="8,7,8,8">
-                    <!-- Stacked view -->
+                    <!-- Stacked view (virtualized) -->
                     <ItemsControl ItemsSource="{Binding Nodes}" Focusable="False"
-                                  Visibility="{Binding IsStackedView, Converter={StaticResource BoolToVis}}">
+                                  Visibility="{Binding IsStackedView, Converter={StaticResource BoolToVis}}"
+                                  VirtualizingPanel.IsVirtualizing="True"
+                                  VirtualizingPanel.VirtualizationMode="Recycling">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel/>
+                                <VirtualizingStackPanel/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
@@ -264,7 +264,6 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
-            </Grid><!-- content layer -->
         </Grid>
     </Border>
 </Window>

@@ -12,7 +12,7 @@ public sealed partial class NodeViewModel : ObservableObject
     [ObservableProperty] private string _label;
     [ObservableProperty] private string _value = "--";
     [ObservableProperty] private string _unit;
-    [ObservableProperty] private Brush _heatColor = new SolidColorBrush(Color.FromRgb(64, 64, 64));
+    [ObservableProperty] private Brush _heatColor = _neutralAccent;
     [ObservableProperty] private string _icon;
 
     private readonly SensorType _sensorType;
@@ -50,10 +50,10 @@ public sealed partial class NodeViewModel : ObservableObject
         float v = value.Value;
         _lastValue = v;
 
-        Value = _sensorType switch
+        var formatted = _sensorType switch
         {
             SensorType.Temperature => v.ToString("F1"),
-            SensorType.Clock       => v >= 1000 ? (v / 1000f).ToString("F2") + " GHz" : v.ToString("F0"),
+            SensorType.Clock       => v >= 1000 ? $"{v / 1000f:F2} GHz" : v.ToString("F0"),
             SensorType.Load        => v.ToString("F1"),
             SensorType.Data        => v.ToString("F2"),
             SensorType.SmallData   => v.ToString("F0"),
@@ -62,26 +62,38 @@ public sealed partial class NodeViewModel : ObservableObject
             _                      => v.ToString("F1"),
         };
 
-        // Override unit display for clocks that were converted to GHz
-        if (_sensorType == SensorType.Clock && v >= 1000)
-            Unit = string.Empty; // unit already embedded in Value string
-        else
-            Unit = GetUnit(_sensorType);
+        // Only raise property changes when the display text actually differs
+        if (Value != formatted)
+            Value = formatted;
 
-        HeatColor = (_sensorType == SensorType.Temperature && _useHeatColors)
+        // Override unit display for clocks that were converted to GHz
+        var unit = (_sensorType == SensorType.Clock && v >= 1000) ? string.Empty : GetUnit(_sensorType);
+        if (Unit != unit)
+            Unit = unit;
+
+        var brush = (_sensorType == SensorType.Temperature && _useHeatColors)
             ? GetTemperatureColor(v)
             : _neutralAccent;
+        if (HeatColor != brush)
+            HeatColor = brush;
     }
 
-    // Solid colors — used as the left accent strip on the node card
-    private static readonly Brush _neutralAccent = new SolidColorBrush(Color.FromRgb(64, 64, 64));
+    // Solid colors — used as the left accent strip on the node card.
+    // All brushes are frozen so they're thread-safe and skip WPF change-tracking.
+    private static readonly Brush _neutralAccent = Freeze(new SolidColorBrush(Color.FromRgb(64, 64, 64)));
+    private static readonly Brush _coolBrush     = Freeze(new SolidColorBrush(Color.FromRgb(61, 196, 90)));
+    private static readonly Brush _warmBrush     = Freeze(new SolidColorBrush(Color.FromRgb(212, 160, 23)));
+    private static readonly Brush _hotBrush      = Freeze(new SolidColorBrush(Color.FromRgb(212, 103, 23)));
+    private static readonly Brush _critBrush     = Freeze(new SolidColorBrush(Color.FromRgb(212, 48, 23)));
+
+    private static Brush Freeze(SolidColorBrush b) { b.Freeze(); return b; }
 
     private static Brush GetTemperatureColor(float temp) => temp switch
     {
-        < 50 => new SolidColorBrush(Color.FromRgb(61, 196, 90)),
-        < 70 => new SolidColorBrush(Color.FromRgb(212, 160, 23)),
-        < 85 => new SolidColorBrush(Color.FromRgb(212, 103, 23)),
-        _    => new SolidColorBrush(Color.FromRgb(212, 48, 23)),
+        < 50 => _coolBrush,
+        < 70 => _warmBrush,
+        < 85 => _hotBrush,
+        _    => _critBrush,
     };
 
     private static string GetUnit(SensorType type) => type switch

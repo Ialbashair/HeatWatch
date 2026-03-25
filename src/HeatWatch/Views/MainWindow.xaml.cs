@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using HeatWatch.ViewModels;
 
 namespace HeatWatch.Views;
@@ -7,15 +9,44 @@ namespace HeatWatch.Views;
 public partial class MainWindow : Window
 {
     private MainViewModel? _vm;
+    private readonly DispatcherTimer _positionSaveTimer;
 
     public MainWindow()
     {
         InitializeComponent();
+
+        _positionSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+        _positionSaveTimer.Tick += (_, _) =>
+        {
+            _positionSaveTimer.Stop();
+            _vm?.PersistWindowPosition(Left, Top);
+        };
+
         DataContextChanged += (_, e) =>
         {
+            if (_vm is not null)
+                _vm.PropertyChanged -= OnVmPropertyChanged;
+
             _vm = e.NewValue as MainViewModel;
+
+            if (_vm is not null)
+                _vm.PropertyChanged += OnVmPropertyChanged;
         };
         LocationChanged += OnLocationChanged;
+    }
+
+    private void OnVmPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName != nameof(MainViewModel.ControlsVisible))
+            return;
+
+        // Let WPF remeasure and resize to fit the now-visible/collapsed title bar.
+        SizeToContent = SizeToContent.Height;
+
+        // In resizable mode, restore Manual after the layout pass completes.
+        if (_vm!.IsResizable)
+            Dispatcher.InvokeAsync(() => SizeToContent = SizeToContent.Manual,
+                DispatcherPriority.Loaded);
     }
 
     private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -26,7 +57,8 @@ public partial class MainWindow : Window
 
     private void OnLocationChanged(object? sender, EventArgs e)
     {
-        _vm?.PersistWindowPosition(Left, Top);
+        _positionSaveTimer.Stop();
+        _positionSaveTimer.Start();
     }
 
     private void Close_Click(object sender, RoutedEventArgs e)
@@ -36,6 +68,8 @@ public partial class MainWindow : Window
 
     protected override void OnClosed(EventArgs e)
     {
+        _positionSaveTimer.Stop();
+        _vm?.PersistWindowPosition(Left, Top);
         _vm?.Dispose();
         base.OnClosed(e);
     }

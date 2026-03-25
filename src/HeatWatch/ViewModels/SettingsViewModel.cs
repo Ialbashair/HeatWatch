@@ -25,8 +25,6 @@ public sealed partial class SettingsViewModel : ObservableObject
 
     [ObservableProperty] private int _selectedTabIndex = 0;
     [ObservableProperty] private string _searchText = string.Empty;
-    [ObservableProperty] private double _nodeOpacity;
-    [ObservableProperty] private double _backgroundOpacity;
     [ObservableProperty] private bool _autoHideControls;
     [ObservableProperty] private bool _useHeatColors;
 
@@ -71,8 +69,6 @@ public sealed partial class SettingsViewModel : ObservableObject
         _selectedView      = settings.View;
         _isRunAtStartup    = StartupManager.IsEnabled();
         _isResizable       = settings.IsResizable;
-        _nodeOpacity       = settings.NodeOpacity;
-        _backgroundOpacity = settings.BackgroundOpacity;
         _autoHideControls  = settings.AutoHideControls;
         _useHeatColors     = settings.UseHeatColors;
 
@@ -133,15 +129,11 @@ public sealed partial class SettingsViewModel : ObservableObject
         _settings.Theme            = SelectedTheme;
         _settings.View             = SelectedView;
         _settings.IsResizable      = IsResizable;
-        _settings.NodeOpacity      = NodeOpacity;
-        _settings.BackgroundOpacity = BackgroundOpacity;
         _settings.AutoHideControls = AutoHideControls;
         _settings.UseHeatColors    = UseHeatColors;
         _mainVm.RebuildNodes(_settings.Nodes);
         _mainVm.AppView            = SelectedView;
         _mainVm.IsResizable        = IsResizable;
-        _mainVm.NodeOpacity        = NodeOpacity;
-        _mainVm.BackgroundOpacity  = BackgroundOpacity;
         _mainVm.AutoHideControls   = AutoHideControls;
         _mainVm.UseHeatColors      = UseHeatColors;
         ThemeManager.Apply(SelectedTheme);
