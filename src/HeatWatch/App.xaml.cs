@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Windows;
 using HeatWatch.Core.Hardware;
 using HeatWatch.Core.Persistence;
@@ -13,6 +14,7 @@ public partial class App : Application
     private HardwareMonitor? _hardwareMonitor;
     private SensorPoller? _poller;
     private MainViewModel? _mainVm;
+    private System.Windows.Forms.NotifyIcon? _trayIcon;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -44,7 +46,10 @@ public partial class App : Application
             _mainVm = new MainViewModel(_poller, repo, settings);
             _mainVm.ShowCpuDriverWarning = cpuTempDriverBlocked;
 
-            // 7. Create and show window
+            // 7. Set up system tray icon
+            SetupTrayIcon();
+
+            // 8. Create and show window
             var window = new MainWindow { DataContext = _mainVm };
 
             if (!double.IsNaN(settings.WindowLeft) && !double.IsNaN(settings.WindowTop))
@@ -60,9 +65,18 @@ public partial class App : Application
             }
 
             MainWindow = window;
+
+            // 9. If tray mode is on, hide from taskbar and show tray icon immediately
+            if (settings.MinimizeToTray)
+            {
+                window.ShowInTaskbar = false;
+                if (_trayIcon is not null)
+                    _trayIcon.Visible = true;
+            }
+
             window.Show();
 
-            // 8. Start polling after the window is visible
+            // 10. Start polling after the window is visible
             _poller.Start();
         }
         catch (Exception ex)
@@ -76,11 +90,99 @@ public partial class App : Application
         }
     }
 
+    private void SetupTrayIcon()
+    {
+        Icon icon;
+        try
+        {
+            var iconStream = GetResourceStream(new Uri("pack://application:,,,/Assets/heatwatch-logo-16px.ico"))?.Stream;
+            icon = iconStream is not null ? new Icon(iconStream) : SystemIcons.Application;
+        }
+        catch
+        {
+            icon = SystemIcons.Application;
+        }
+
+        _trayIcon = new System.Windows.Forms.NotifyIcon
+        {
+            Icon = icon,
+            Text = "HeatWatch",
+            Visible = false,
+        };
+
+        var contextMenu = new System.Windows.Forms.ContextMenuStrip();
+        var showItem = contextMenu.Items.Add("Show HeatWatch", null, (_, _) => ToggleMainWindow());
+        contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
+        contextMenu.Items.Add("Exit", null, (_, _) => ExitApplication());
+        _trayIcon.ContextMenuStrip = contextMenu;
+
+        // Update the Show/Hide label each time the menu opens
+        contextMenu.Opening += (_, _) =>
+        {
+            bool isVisible = MainWindow is MainWindow w && w.IsVisible;
+            showItem.Text = isVisible ? "Hide HeatWatch" : "Show HeatWatch";
+        };
+
+        _trayIcon.DoubleClick += (_, _) => ToggleMainWindow();
+    }
+
+    public void ToggleMainWindow()
+    {
+        if (MainWindow is MainWindow window && window.IsVisible)
+            HideMainWindow();
+        else
+            ShowMainWindow();
+    }
+
+    public void ShowMainWindow()
+    {
+        if (MainWindow is MainWindow window)
+        {
+            window.Show();
+            window.WindowState = WindowState.Normal;
+            window.Activate();
+        }
+    }
+
+    public void HideMainWindow()
+    {
+        if (MainWindow is MainWindow window)
+            window.Hide();
+    }
+
+    /// <summary>
+    /// Called when the MinimizeToTray setting is toggled at runtime.
+    /// </summary>
+    public void ApplyTrayMode(bool enabled)
+    {
+        if (MainWindow is MainWindow window)
+            window.ShowInTaskbar = !enabled;
+
+        if (_trayIcon is not null)
+            _trayIcon.Visible = enabled;
+    }
+
+    public void ExitApplication()
+    {
+        if (_trayIcon is not null)
+        {
+            _trayIcon.Visible = false;
+            _trayIcon.Dispose();
+            _trayIcon = null;
+        }
+        Shutdown();
+    }
+
     protected override void OnExit(ExitEventArgs e)
     {
         _poller?.Stop();
         _mainVm?.Dispose();
         _hardwareMonitor?.Dispose();
+        if (_trayIcon is not null)
+        {
+            _trayIcon.Visible = false;
+            _trayIcon.Dispose();
+        }
         base.OnExit(e);
     }
 }

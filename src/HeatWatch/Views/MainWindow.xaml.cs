@@ -66,12 +66,47 @@ public partial class MainWindow : Window
         Close();
     }
 
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        if (_vm is { MinimizeToTray: true } && Application.Current is App app)
+        {
+            e.Cancel = true;
+
+            // Show first-time tray notification
+            if (!_vm.HasSeenTrayMessage)
+            {
+                _vm.HasSeenTrayMessage = true;
+                _vm.ShowTrayMessage = true;
+
+                // Auto-dismiss after 5 seconds, then hide window
+                var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(5) };
+                timer.Tick += (_, _) =>
+                {
+                    timer.Stop();
+                    _vm.ShowTrayMessage = false;
+                    app.HideMainWindow();
+                };
+                timer.Start();
+            }
+            else
+            {
+                app.HideMainWindow();
+            }
+            return;
+        }
+
+        base.OnClosing(e);
+    }
+
     protected override void OnClosed(EventArgs e)
     {
         _positionSaveTimer.Stop();
         _vm?.PersistWindowPosition(Left, Top);
         _vm?.Dispose();
         base.OnClosed(e);
+
+        if (Application.Current is App app)
+            app.ExitApplication();
     }
 
     protected override void OnMouseEnter(System.Windows.Input.MouseEventArgs e)

@@ -12,5 +12,7 @@ public sealed class AppSettings
     public bool IsResizable { get; set; } = false;
     public bool AutoHideControls { get; set; } = false;
     public bool UseHeatColors { get; set; } = true;
+    public bool MinimizeToTray { get; set; } = true;
+    public bool HasSeenTrayMessage { get; set; } = false;
     public List<NodeDefinition> Nodes { get; set; } = new List<NodeDefinition>();
 }

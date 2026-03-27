@@ -25,6 +25,8 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty] private bool _isResizable;
     [ObservableProperty] private bool _autoHideControls;
     [ObservableProperty] private bool _useHeatColors;
+    [ObservableProperty] private bool _minimizeToTray;
+    [ObservableProperty] private bool _showTrayMessage;
     [ObservableProperty] private bool _controlsVisible = true;
 
     private readonly DispatcherTimer _hideTimer;
@@ -33,6 +35,12 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
     {
         _settings.IsTopmost = value;
         SaveSettings();
+    }
+
+    partial void OnMinimizeToTrayChanged(bool value)
+    {
+        if (Application.Current is App app)
+            app.ApplyTrayMode(value);
     }
 
     partial void OnAppViewChanged(AppView value)
@@ -144,6 +152,7 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
         _isResizable      = settings.IsResizable;
         _autoHideControls = settings.AutoHideControls;
         _useHeatColors    = settings.UseHeatColors;
+        _minimizeToTray   = settings.MinimizeToTray;
 
         _hideTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
         _hideTimer.Tick += (_, _) => { _hideTimer.Stop(); ControlsVisible = false; };
@@ -184,6 +193,19 @@ public sealed partial class MainViewModel : ObservableObject, IDisposable
             }
         }, DispatcherPriority.Background);
     }
+
+    public bool HasSeenTrayMessage
+    {
+        get => _settings.HasSeenTrayMessage;
+        set
+        {
+            _settings.HasSeenTrayMessage = value;
+            SaveSettings();
+        }
+    }
+
+    [RelayCommand]
+    private void DismissTrayMessage() => ShowTrayMessage = false;
 
     [RelayCommand]
     public void OpenSettings() => OpenSettingsAtTab(0);

@@ -37,6 +37,7 @@ public sealed partial class SettingsViewModel : ObservableObject
     [ObservableProperty] private AppView _selectedView;
     [ObservableProperty] private bool _isRunAtStartup;
     [ObservableProperty] private bool _isResizable;
+    [ObservableProperty] private bool _minimizeToTray;
 
     partial void OnSearchTextChanged(string value) => FilteredNodes.Refresh();
 
@@ -71,6 +72,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         _isResizable       = settings.IsResizable;
         _autoHideControls  = settings.AutoHideControls;
         _useHeatColors     = settings.UseHeatColors;
+        _minimizeToTray    = settings.MinimizeToTray;
 
         AllNodes = new ObservableCollection<NodeDefinition>(
             settings.Nodes.Select(n => new NodeDefinition
@@ -131,11 +133,13 @@ public sealed partial class SettingsViewModel : ObservableObject
         _settings.IsResizable      = IsResizable;
         _settings.AutoHideControls = AutoHideControls;
         _settings.UseHeatColors    = UseHeatColors;
+        _settings.MinimizeToTray   = MinimizeToTray;
         _mainVm.RebuildNodes(_settings.Nodes);
         _mainVm.AppView            = SelectedView;
         _mainVm.IsResizable        = IsResizable;
         _mainVm.AutoHideControls   = AutoHideControls;
         _mainVm.UseHeatColors      = UseHeatColors;
+        _mainVm.MinimizeToTray     = MinimizeToTray;
         ThemeManager.Apply(SelectedTheme);
         if (IsRunAtStartup) StartupManager.Enable();
         else                StartupManager.Disable();

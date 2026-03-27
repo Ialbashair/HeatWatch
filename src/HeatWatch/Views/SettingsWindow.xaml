@@ -573,6 +573,28 @@
                                 </CheckBox>
                             </Border>
 
+                            <!-- Minimize to tray -->
+                            <Border Background="{DynamicResource Surface2Brush}"
+                                    BorderBrush="{DynamicResource BorderBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6"
+                                    Padding="12,10"
+                                    Margin="0,0,0,6">
+                                <CheckBox Style="{StaticResource DarkCheckBoxStyle}"
+                                          IsChecked="{Binding MinimizeToTray}">
+                                    <StackPanel Margin="2,0,0,0">
+                                        <TextBlock Text="Minimize to tray on close"
+                                                   Foreground="{DynamicResource TextPrimaryBrush}"
+                                                   FontSize="12"/>
+                                        <TextBlock Text="Keep HeatWatch running in the system tray when you close the window. Right-click the tray icon to exit."
+                                                   Foreground="{DynamicResource TextMutedBrush}"
+                                                   FontSize="10"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </CheckBox>
+                            </Border>
+
                             <!-- Allow window resizing -->
                             <Border Background="{DynamicResource Surface2Brush}"
                                     BorderBrush="{DynamicResource BorderBrush}"
